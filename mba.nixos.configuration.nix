@@ -42,7 +42,7 @@
         tree
         chromium
         pciutils
-        git
+        gitAndTools.gitFull
         clang
         gcc
         gnumake
