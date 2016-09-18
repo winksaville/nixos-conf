@@ -4,6 +4,8 @@
 
 { config, pkgs, ... }:
 
+# New comment line
+
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -32,9 +34,16 @@
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
 
+  # allowUnfree is needed to support broadcom wireless drivers
+  nixpkgs.config = {
+    allowUnfree = true;
+    vim.python = false;
+    vim.ruby = false;
+    vim.lua = true;
+  };
+
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
-    # chromiumDev
   environment = {
     systemPackages = 
       with pkgs; [
@@ -50,7 +59,12 @@
         python3
         terminator
         keychain
-        vim
+        (vim_configurable.override {
+          features = "normal";
+          clipboard = true;
+          #python = python3;
+        })
+        #vim
         wget
         which
         lxappearance
@@ -64,7 +78,6 @@
   # nixosManu is by default true, uncomment if an error.
   # I saw an error on pacmanvps with a 512M machine an no
   # swap partition/file.
-  # services.nixosManual.enable = false;
 
   # Enable acpi
   services.acpid.enable = true;
@@ -158,11 +171,9 @@
   };
 
   # The NixOS release to be compatible with for stateful data such as databases.
-  system.stateVersion = "16.03";
-
-  # Needed to support broadcom wireless drivers
-  nixpkgs.config = {
-    allowUnfree = true;
+  system = {
+    stateVersion = "16.03";
+    copySystemConfiguration = true;
   };
 
 }
