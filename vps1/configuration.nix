@@ -48,28 +48,57 @@ in
     '';
 
 
-  # networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
   # Select internationalisation properties.
-  # i18n = {
-  #   consoleFont = "Lat2-Terminus16";
-  #   consoleKeyMap = "us";
-  #   defaultLocale = "en_US.UTF-8";
-  # };
+  i18n = {
+    consoleFont = "Lat2-Terminus16";
+    consoleKeyMap = "us";
+    defaultLocale = "en_US.UTF-8";
+  };
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "America/Los_Angeles";
+
+  # allowUnfree is needed to support broadcom wireless drivers
+  nixpkgs.config = {
+    allowUnfree = true;
+    vim.python = false;
+    vim.ruby = false;
+    vim.lua = false;
+  };
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
-  # environment.systemPackages = with pkgs; [
-  #   wget
-  # ];
+  environment = {
+    systemPackages =
+      with pkgs; [
+        re2c texinfo gperf help2man flex
+        tree
+        chromium
+        pciutils
+        gitAndTools.gitFull
+        clang
+        gcc
+        gnumake
+        python
+        python3
+        terminator
+        keychain
+        (vim_configurable.override {
+          features = "normal";
+          clipboard = true;
+          xterm_clipboard = true;
+          #python = python3;
+        })
+        #vim
+        wget
+        which
+        lxappearance
+        xclip xlibs.xcursorthemes xlibs.xev xlibs.xmodmap
+        xlibs.xset xlibs.xbacklight
+      ];
+  };
 
   # List services that you want to enable:
-
-  services.nixosManual.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
@@ -104,9 +133,9 @@ in
   };
 
   # The NixOS release to be compatible with for stateful data such as databases.
-  system.stateVersion = "16.03";
+  system = {
+    stateVersion = "16.03";
+    copySystemConfiguration = true;
+  };
 
-  environment.systemPackages = with pkgs; [
-    which # clang
-  ];
 }
