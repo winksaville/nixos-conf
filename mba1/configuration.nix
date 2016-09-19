@@ -17,7 +17,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking = {
-    hostName = "mba.nixos"; # Define your hostname.
+    hostName = "mba1"; # Define your hostname.
     extraHosts = "149.56.41.68 vps1 vps1";
     wireless.enable = false;  # Enables wireless support via wpa_supplicant.
     useDHCP = true;
@@ -39,13 +39,13 @@
     allowUnfree = true;
     vim.python = false;
     vim.ruby = false;
-    vim.lua = true;
+    vim.lua = false;
   };
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment = {
-    systemPackages = 
+    systemPackages =
       with pkgs; [
         re2c texinfo gperf help2man flex
         tree
@@ -62,6 +62,7 @@
         (vim_configurable.override {
           features = "normal";
           clipboard = true;
+          xterm_clipboard = true;
           #python = python3;
         })
         #vim
@@ -80,6 +81,7 @@
   # swap partition/file.
 
   # Enable acpi
+
   services.acpid.enable = true;
   services.acpid.lidEventCommands = ''
     LID_STATE=/proc/acpi/button/lid/LID0/state
