@@ -136,7 +136,7 @@
     synaptics = {
       enable = true;
       buttonsMap = [ 1 3 2 ];
-      tapButtons = true;
+      tapButtons = false;
       twoFingerScroll = true;
       vertEdgeScroll = false;
       minSpeed = "0.6";
