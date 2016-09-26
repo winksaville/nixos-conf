@@ -97,6 +97,14 @@ in
         xlibs.xset xlibs.xbacklight
       ];
   };
+  environment.etc."profile.local".text =
+    ''
+    # /etc/profile.local: DO NOT EDIT - this file has been generated in configuration.nix
+    if test -f "$HOME/.profile"; then
+      . "$HOME/.profile"
+    fi
+    '';
+
 
   # List services that you want to enable:
 

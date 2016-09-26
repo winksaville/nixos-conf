@@ -68,11 +68,19 @@
         #vim
         wget
         which
+        wireshark
         lxappearance
         xclip xlibs.xcursorthemes xlibs.xev xlibs.xmodmap
         xlibs.xset xlibs.xbacklight
       ];
   };
+  environment.etc."profile.local".text =
+    ''
+    # /etc/profile.local: DO NOT EDIT - this file has been generated in configuration.nix
+    if test -f "$HOME/.profile"; then
+      . "$HOME/.profile"
+    fi
+    '';
 
   # List services that you want to enable:
 
@@ -154,6 +162,18 @@
     };
   };
 
+  security.setuidOwners = [
+    { program = "dumpcap";
+      owner = "root";
+      group = "wireshark";
+      setuid = true;
+      setgid = false;
+      permissions = "u+rx,g+x";
+    }
+  ];
+
+  users.extraGroups.wireshark.gid = 500;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.extraUsers.guest = {
   #   isNormalUser = true;
@@ -165,7 +185,7 @@
     description = "Wink Saville";
     group = "users";
     #extraGroups = [ "wheel" "networkmanager" ];
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "wireshark" ];
     uid = 1000;
     createHome = true;
     home = "/home/wink";
